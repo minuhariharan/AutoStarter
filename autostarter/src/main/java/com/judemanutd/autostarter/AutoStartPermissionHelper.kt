@@ -322,7 +322,13 @@ class AutoStartPermissionHelper private constructor() {
         try {
             val intent = Intent()
             intent.component = ComponentName(packageName, componentName)
-            context.startActivity(intent)
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+             if (intent.resolveActivity(context.getPackageManager()) != null) {
+                context.startActivity(intent)
+            }
         } catch (exception: Exception) {
             exception.printStackTrace()
             throw exception
